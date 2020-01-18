@@ -2,6 +2,7 @@ import React from "react";
 import Boxes from "./Checkbox";
 import Header from "./Header";
 import Count from "./Count";
+import nodeProcess from "../nodeProcess/nodeProcess";
 const csInterface = new CSInterface();
 const extensionRoot = csInterface.getSystemPath(SystemPath.EXTENSION) +`/jsx/`;
 csInterface.evalScript(`$.evalFile("${extensionRoot}json2.js")`);//json2読み込み
@@ -25,28 +26,25 @@ export default class Layout extends React.Component{
             layers:[
                 {
                     id:0,
-                    text:"junko"
+                    text:"ryoutsu"
                 },
                 {
                     id:1,
-                    text:"aiai"
+                    text:"butyou"
                 }
             ],
             count:0    
         }
-        this.callJsx = this.callJsx.bind(this);
-        this.getLayers = this.getLayers.bind(this);
-        this.counting = this.counting.bind(this);
     }
 
-    counting(props){
+    counting = (props) =>{
         console.log(props);
         this.setState(state=>{
             return state.count += props;//必ずreturnで返す
         });
     }
 
-    callJsx(){
+    callJsx = () =>{
         return new Promise((resolve,reject)=>{
             csInterface.evalScript(`$.evalFile("${extensionRoot}${this.jsx}")`,(o)=>{
                 console.log(o);
@@ -56,16 +54,16 @@ export default class Layout extends React.Component{
         });
     }
 
-    async getLayers(){
+    getLayers = async() =>{
         const res = await this.callJsx().catch(e=> console.log(e));
         const object = JSON.parse(res);
         console.log(object);
         this.setState({
             layers:object
-        },()=>console.log(this.state));//setStateは非同期関数
+        },()=>console.log(this.state));//setState is asynchronous
     }
 
-    render(){
+    render = () =>{
         console.log(this.state);
         return(
             <div className="container">
@@ -73,7 +71,8 @@ export default class Layout extends React.Component{
                 <Header getLayers = {this.getLayers}/>
                 <Boxes layers = {this.state.layers} />
                 <Count count={this.state.count} counting={this.counting}/>
-                <button id="callHost" className="topcoat-button" onClick={(e)=>{callHostScript(this.state)}}>callHost</button>
+                <button id="callHost" className="topcoat-button" onClick={(e)=>callHostScript(this.state)}>callHost</button>
+                <button className="topcoat-button" onClick={()=>nodeProcess("from React on Photoshop")}>call node</button>
             </div>
         )
     }

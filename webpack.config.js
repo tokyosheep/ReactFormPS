@@ -1,12 +1,18 @@
 "use strict";
-const mode = "development";
+const mode = "development";//after you developed app you should change to production
 const debug = mode !== "production";
 const webpack = require("webpack");
 const path = require("path");
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     mode:mode,
-    context:path.join(__dirname,"/js/src"),//ベースのディレクトリー
+    externals: [nodeExternals()],
+    target:"node",
+    /*set Node enviironment, default is "web"(for browser) but it might be "node-webkit" 
+    because Adobe cep based on node-webkit
+    */
+    context:path.join(__dirname,"/js/src"),//base directory
     entry:"./main.js",
     module:{
         rules:[
@@ -18,8 +24,9 @@ module.exports = {
                         loader:"babel-loader",
                         options:{
                             presets:["@babel/preset-react","@babel/preset-env"],
-                            plugins: ['@babel/plugin-transform-runtime']
-                            //async await を使用する場合別途babel runtimeが必要
+                            plugins: ['@babel/plugin-transform-runtime',//you need it to use async await on React
+                            "@babel/plugin-proposal-class-properties",//It makes possible to use arrow function on class method
+                        ]
                         }
                     }
                 ]
@@ -34,8 +41,3 @@ module.exports = {
         new webpack.optimize.OccurrenceOrderPlugin()
     ]
 };
-
-/*
-npm i @babel/preset-env @babel/plugin-transform-runtime 
-@babel/runtime --save-dev
-*/
