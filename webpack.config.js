@@ -10,7 +10,7 @@ module.exports = {
     externals: [nodeExternals()],
     target:"node",
     /*set Node enviironment, default is "web"(for browser) but it might be "node-webkit" 
-    because Adobe cep based on node-webkit but i'm not sure
+    because Adobe cep based on node-webkit I'm not sure which correct exactly 
     */
     context:path.join(__dirname,"/js/src"),//base directory
     entry:"./main.js",
