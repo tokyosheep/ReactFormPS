@@ -1,5 +1,5 @@
 "use strict";
-const mode = "development";//after you developed app you should change to production
+const mode = "development";
 const debug = mode !== "production";
 const webpack = require("webpack");
 const path = require("path");
@@ -9,8 +9,8 @@ module.exports = {
     mode:mode,
     externals: [nodeExternals()],
     target:"node",
-    /*set Node enviironment, default is "web"(for browser) but it might be "node-webkit" 
-    because Adobe cep based on node-webkit I'm not sure which correct exactly 
+    /*Nodeの環境をここで指定しないとNode,ネイティブモジュール等がうまく動かない。ただしAdobeCEPはドキュメントによるとNode-web-kitベースで作られている
+    らしいのでnode-webkitの指定の方が合っているかもしれない。
     */
     context:path.join(__dirname,"/js/src"),//base directory
     entry:"./main.js",
@@ -24,8 +24,8 @@ module.exports = {
                         loader:"babel-loader",
                         options:{
                             presets:["@babel/preset-react","@babel/preset-env"],
-                            plugins: ['@babel/plugin-transform-runtime',//you need it to use async await on React
-                            "@babel/plugin-proposal-class-properties",//It makes possible to use arrow function on class method
+                            plugins: ['@babel/plugin-transform-runtime',//async await用プラグイン
+                            "@babel/plugin-proposal-class-properties",//アローファンクション用プラグイン
                         ]
                         }
                     }
