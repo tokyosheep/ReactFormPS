@@ -3,14 +3,14 @@ const mode = "development";//after you developed app you should change to produc
 const debug = mode !== "production";
 const webpack = require("webpack");
 const path = require("path");
-const nodeExternals = require('webpack-node-externals');
+const nodeExternals = require('webpack-node-externals');//for node environment
 
 module.exports = {
     mode:mode,
     externals: [nodeExternals()],
     target:"node",
     /*set Node enviironment, default is "web"(for browser) but it might be "node-webkit" 
-    because Adobe cep based on node-webkit
+    because Adobe cep based on node-webkit but i'm not sure
     */
     context:path.join(__dirname,"/js/src"),//base directory
     entry:"./main.js",
